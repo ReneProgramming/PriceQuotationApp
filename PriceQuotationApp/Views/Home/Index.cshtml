@@ -1,8 +1,39 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model PriceQuotationApp.Models.PriceQuotationModel
+
+<h2>Price Quotation</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary()
+    </div>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form asp-action="Index" method="post">
+    <div class="form-group">
+        <label asp-for="Subtotal" class="control-label"></label>
+        <input asp-for="Subtotal" class="form-control" />
+        @Html.ValidationMessageFor(model => model.Subtotal, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DiscountPercent" class="control-label"></label>
+        <input asp-for="DiscountPercent" class="form-control" />
+        @Html.ValidationMessageFor(model => model.DiscountPercent, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label>Discount Amount:</label>
+        <input asp-for="DiscountAmount" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Total:</label>
+        <input asp-for="Total" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Calculate</button>
+        <button type="submit" formaction="@Url.Action("Clear")" class="btn btn-secondary">Clear</button>
+    </div>
+</form>

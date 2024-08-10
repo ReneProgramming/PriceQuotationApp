@@ -4,29 +4,37 @@ using System.Diagnostics;
 
 namespace PriceQuotationApp.Controllers
 {
-	public class HomeController : Controller
-	{
-		private readonly ILogger<HomeController> _logger;
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
 
-		public HomeController(ILogger<HomeController> logger)
-		{
-			_logger = logger;
-		}
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
 
-		public IActionResult Index()
-		{
-			return View();
-		}
+        public IActionResult Index()
+        {
+            return View(new PriceQuotationModel()); 
+        }
 
-		public IActionResult Privacy()
-		{
-			return View();
-		}
+        [HttpPost]
+        public IActionResult Index(PriceQuotationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(model); // Return the model with calculated values
+            }
+            else
+            {
+                return View(model); // Return with validation errors
+            }
+        }
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		}
-	}
+        [HttpPost]
+        public IActionResult Clear()
+        {
+            return RedirectToAction("Index"); 
+        }
+    }
 }
